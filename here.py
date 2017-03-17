@@ -43,19 +43,7 @@ field_list_objects = result['results']
 # print set(field_list)
 # json.loads()
 
-master_ordered_list = {
-    "SUBJECT"
-    "NAME_PREFIX",
-    "NAME_FIRST",
-    "NAME_LAST",
-    "EMAIL",
-    "PHONE",
-    "ADDRESS_STREET",
-    "ADDRESS_CITY",
-    "ADDRESS_ZIP4",
-    "ADDRESS_ZIP5",
-    "TOPIC",
-}
+
 
 ordered_array = []
 # for ordered_item in master_ordered_list:
@@ -84,7 +72,7 @@ sorted_array = sorted(ordered_array, key=operator.itemgetter('value','options_le
 # print sorted_array
 print len(sorted_array)
 
-#  Strip out extra NAME_PREFIX, use shortest
+#  Strip out extra duplictes, group bioguide IDs
 count = 0
 length = len(sorted_array)
 sorted_clip = []
@@ -102,9 +90,7 @@ for item in sorted_array:
             previous_item = item
         elif item['value'] == previous_item['value']:
             previous_item['bioguideId'] = previous_item['bioguideId'] + ' ' + item['bioguideId']
-             # if last, then add previous
-            # sorted_clip.append(previous_item)
-    elif count == length:
+    elif count == length: # behavior different if last in list
         if previous_item['value'] == 'TOPIC':
             sorted_clip.append(previous_item)
             sorted_clip.append(item)
@@ -117,16 +103,66 @@ for item in sorted_array:
 print len(sorted_clip)
 print sorted_clip
 
+# order them
+master_ordered_list = {
+    "MESSAGE",
+    "NAME_PREFIX",
+    "NAME_FIRST",
+    "NAME_LAST",
+    "EMAIL",
+    "PHONE",
+    "ADDRESS_STREET",
+    "ADDRESS_CITY",
+    "ADDRESS_ZIP4",
+    "ADDRESS_ZIP5",
+    "SUBJECT",
+    "TOPIC",
+}
+
+objects_to_end = []
+objects_to_order = []
+for item in sorted_clip:
+    for list_item in master_ordered_list:
+        if item['value'] == list_item:
+            found = True
+    if found:
+        objects_to_order.append(item)
+    elif not found:
+        objects_to_end.append(item)
+
+ordered_objects = []
+for list_item in master_ordered_list:
+    for object_item in objects_to_order:
+        if object_item['value'] == list_item:
+            ordered_objects.append(object_item)
+        else:
+            pass
+
+if len(ordered_objects) == 0:
+    ordered_objects.append(objects_to_end)
+print len(ordered_objects)
+print ordered_objects
 
 
 
-# for item in ordered_array:
-#     print item['value']
 
 
 
 
-#         search each list for that value.  If found, add element class name corresponding to congressperson
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
