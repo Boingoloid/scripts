@@ -100,11 +100,11 @@ for item in sorted_array:
         elif item['value'] == previous_item['value']:
             sorted_clip.append(previous_item)
 
-print len(sorted_clip)
-print sorted_clip
+# print len(sorted_clip)
+# print sorted_clip
 
 # order them
-master_ordered_list = {
+master_ordered_list = [
     "MESSAGE",
     "NAME_PREFIX",
     "NAME_FIRST",
@@ -117,11 +117,13 @@ master_ordered_list = {
     "ADDRESS_ZIP5",
     "SUBJECT",
     "TOPIC",
-}
+]
 
+# separate into those to order and those to put at end
 objects_to_end = []
 objects_to_order = []
 for item in sorted_clip:
+    found = False
     for list_item in master_ordered_list:
         if item['value'] == list_item:
             found = True
@@ -130,18 +132,25 @@ for item in sorted_clip:
     elif not found:
         objects_to_end.append(item)
 
+# order the list to be ordered based on master list
 ordered_objects = []
 for list_item in master_ordered_list:
+    print list_item
     for object_item in objects_to_order:
+        print "testing against:", object_item['value']
         if object_item['value'] == list_item:
             ordered_objects.append(object_item)
+            print "appending object:"
         else:
-            pass
+            print "exception"
 
-if len(ordered_objects) == 0:
-    ordered_objects.append(objects_to_end)
+if len(ordered_objects) != 0:
+    ordered_objects = ordered_objects + objects_to_end
+print len(objects_to_order)
 print len(ordered_objects)
 print ordered_objects
+#
+
 
 
 
